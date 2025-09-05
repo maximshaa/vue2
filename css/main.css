@@ -14,6 +14,7 @@ body {
 
 .columns {
     display: flex;
+    background-color: #ffc3c3;
     width: 90%;
     height: 90vh;
 }
@@ -38,9 +39,12 @@ body {
 
 .card {
     background: #c3faff;
-    width: 25%;
-    height: 25%;
+    width: 30%;
+    height: min-content;
+    padding: 0;
     margin: 0;
     margin-left: 2em;
     margin-top: 2em;
+    list-style-type: none;
+    word-break: break-all;
 }
