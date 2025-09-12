@@ -9,10 +9,32 @@ let app = new Vue({
 
         newCard: {
             title: '',
-            items: ''
+            items: ['', '', '', '', '']
         },
 
         blockFirstColumn: false
+    },
+
+    computed: {
+        visibleCount() {
+            const items = this.newCard.items;
+            let count = 0;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].trim() === '') break;
+                count++;
+            }
+            return Math.min(items.length, Math.max(1, count + 1));
+        }
+    },
+
+    watch: {
+        visibleCount(newVal, oldVal) {
+            if (newVal < oldVal) {
+                for (let i = newVal; i < this.newCard.items.length; i++) {
+                    this.newCard.items[i] = '';
+                }
+            }
+        }
     },
 
     methods: {
@@ -23,10 +45,10 @@ let app = new Vue({
             }
 
             if (this.columns.firstColumn.length < 3) {
-                const itemsArray = this.newCard.items.split(',').map(item => ({
-                    text: item.trim(),
-                    completed: false
-                }))
+                const itemsArray = this.newCard.items
+                    .map(item => item.trim())
+                    .filter(item => item)
+                    .map(item => ({ text: item, completed: false }))
 
                 if (itemsArray.length < 3 || itemsArray.length > 5) {
                     alert('Карточка должна содержать от 3 до 5 задач')
@@ -39,7 +61,7 @@ let app = new Vue({
                     completedAt: null
                 })
 
-                this.newCard = {title: '', items: ''}
+                this.newCard = {title: '', items: ['', '', '', '', '']}
                 this.saveData()
             } else {
                 alert('Первый столбец может содержать не более 3 карточек')
